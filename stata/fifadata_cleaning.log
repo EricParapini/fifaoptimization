@@ -1,0 +1,552 @@
+-------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  F:\fifa\stata\fifadata_cleaning.log
+  log type:  text
+ opened on:  18 Feb 2019, 23:55:01
+
+. 
+. *import data
+. use "F:\fifa\stata\fifadata_original.dta", clear
+
+. 
+. 
+. 
+. 
+. ***********************************************************cleaning procedure
+. 
+. *create observation variable
+. drop v1
+
+. gen obs=[_n-1]
+
+. summarize obs
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+         obs |     18,207        9103    5256.053          0      18206
+
+. 
+. *get rid of $M and $K for dollar figures in variables
+. *value
+. gen value2=substr(value,-1,.)
+(252 missing values generated)
+
+. tabulate value2
+
+     value2 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          K |     11,108       61.87       61.87
+          M |      6,847       38.13      100.00
+------------+-----------------------------------
+      Total |     17,955      100.00
+
+. replace value=subinstr(value,"M","",.)
+(6,847 real changes made)
+
+. replace value=subinstr(value,"K","",.)
+(11,108 real changes made)
+
+. destring value, replace
+value: all characters numeric; replaced as double
+(252 missing values generated)
+
+. gen value3=value*1000000 if value2=="M"
+(11,360 missing values generated)
+
+. replace value3=value*1000 if value2=="K"
+(11,108 real changes made)
+
+. replace value3=0 if value==.
+(252 real changes made)
+
+. drop value value2
+
+. rename value3 value
+
+. summarize value
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+       value |     18,207     2410696     5594933          0   1.19e+08
+
+. *wage
+. gen wage2=substr(wage,-1,.)
+(241 missing values generated)
+
+. tabulate wage2
+
+      wage2 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          K |     17,966      100.00      100.00
+------------+-----------------------------------
+      Total |     17,966      100.00
+
+. replace wage=subinstr(wage,"K","",.)
+(17,966 real changes made)
+
+. destring wage, replace
+wage: all characters numeric; replaced as int
+(241 missing values generated)
+
+. gen wage3=wage*1000 if wage2=="K"
+(241 missing values generated)
+
+. replace wage3=0 if wage==.
+(241 real changes made)
+
+. drop wage wage2
+
+. rename wage3 wage
+
+. summarize wage
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+        wage |     18,207    9731.312    21999.29          0     565000
+
+. *releaseclause
+. gen releaseclause2=substr(releaseclause,-1,.)
+(1,564 missing values generated)
+
+. tabulate releaseclause2
+
+releaseclau |
+        se2 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          K |      7,493       45.02       45.02
+          M |      9,150       54.98      100.00
+------------+-----------------------------------
+      Total |     16,643      100.00
+
+. replace releaseclause=subinstr(releaseclause,"M","",.)
+(9,150 real changes made)
+
+. replace releaseclause=subinstr(releaseclause,"K","",.)
+(7,493 real changes made)
+
+. destring releaseclause, replace
+releaseclause: all characters numeric; replaced as double
+(1564 missing values generated)
+
+. gen releaseclause3=releaseclause*1000000 if releaseclause2=="M"
+(9,057 missing values generated)
+
+. replace releaseclause3=releaseclause*1000 if releaseclause2=="K"
+(7,493 real changes made)
+
+. *blank values left as blank (no 0's in original)
+. drop releaseclause releaseclause2
+
+. rename releaseclause3 releaseclause
+
+. summarize releaseclause
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+releasecla~e |     16,643     4585061    1.11e+07      13000   2.28e+08
+
+. *order them together
+. order id name age photo nationality flag overall potential club clublogo valu
+> e wage releaseclause
+
+. 
+. ****************
+. *match to Eric's
+. ****************
+. drop if overall==0
+(0 observations deleted)
+
+. drop if value==0
+(252 observations deleted)
+
+. summarize overall
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+     overall |     17,955    66.22824    6.921015         46         94
+
+. summarize value
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+       value |     17,955     2444530     5626715      10000   1.19e+08
+
+. summarize wage
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+        wage |     17,955    9865.831    22123.14       1000     565000
+
+. 
+. *weight get rid of lbs
+. destring weight, replace ignore("lbs")
+weight: characters l b s removed; replaced as int
+(48 missing values generated)
+
+. summarize weight
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+      weight |     17,907    165.9643    15.60252        110        243
+
+. 
+. *add variables together
+. gen lsfinal=ls+ls2
+(2,037 missing values generated)
+
+. drop ls ls2
+
+. rename lsfinal ls
+
+. summarize ls
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+          ls |     15,918    59.84552    9.140005         33         94
+
+. gen stfinal=st+st2
+(2,037 missing values generated)
+
+. drop st st2
+
+. rename stfinal st
+
+. summarize st
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+          st |     15,918    59.84552    9.140005         33         94
+
+. gen rsfinal=rs+rs2
+(2,037 missing values generated)
+
+. drop rs rs2
+
+. rename rsfinal rs
+
+. summarize rs
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+          rs |     15,918    59.84552    9.140005         33         94
+
+. gen lwfinal=lw+lw2
+(2,037 missing values generated)
+
+. drop lw lw2
+
+. rename lwfinal lw
+
+. summarize lw
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+          lw |     15,918    61.07055     9.88652         27         94
+
+. gen lffinal=lf+lf2
+(2,037 missing values generated)
+
+. drop lf lf2
+
+. rename lffinal lf
+
+. summarize lf
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+          lf |     15,918    60.75361     9.84685         29         95
+
+. gen cffinal=cf+cf2
+(2,037 missing values generated)
+
+. drop cf cf2
+
+. rename cffinal cf
+
+. summarize cf
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+          cf |     15,918    60.75361     9.84685         29         95
+
+. gen rffinal=rf+rf2
+(2,037 missing values generated)
+
+. drop rf rf2
+
+. rename rffinal rf
+
+. summarize rf
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+          rf |     15,918    60.75361     9.84685         29         95
+
+. gen rwfinal=rw+rw2
+(2,037 missing values generated)
+
+. drop rw rw2
+
+. rename rwfinal rw
+
+. summarize rw
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+          rw |     15,918    61.07055     9.88652         27         94
+
+. gen lamfinal=lam+lam2
+(2,037 missing values generated)
+
+. drop lam lam2
+
+. rename lamfinal lam
+
+. summarize lam
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+         lam |     15,918    61.01746    9.776503         29         95
+
+. gen camfinal=cam+cam2
+(2,037 missing values generated)
+
+. drop cam cam2
+
+. rename camfinal cam
+
+. summarize cam
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+         cam |     15,918    61.01746    9.776503         29         95
+
+. gen ramfinal=ram+ram2
+(2,037 missing values generated)
+
+. drop ram ram2
+
+. rename ramfinal ram
+
+. summarize ram
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+         ram |     15,918    61.01746    9.776503         29         95
+
+. gen lmfinal=lm+lm2
+(2,037 missing values generated)
+
+. drop lm lm2
+
+. rename lmfinal lm
+
+. summarize lm
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+          lm |     15,918    61.76423    9.262013         29         93
+
+. gen lcmfinal=lcm+lcm2
+(2,037 missing values generated)
+
+. drop lcm lcm2
+
+. rename lcmfinal lcm
+
+. summarize lcm
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+         lcm |     15,918    60.24507    8.820183         32         91
+
+. gen cmfinal=cm+cm2
+(2,037 missing values generated)
+
+. drop cm cm2
+
+. rename cmfinal cm
+
+. summarize cm
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+          cm |     15,918    60.24507    8.820183         32         91
+
+. gen rcmfinal=rcm+rcm2
+(2,037 missing values generated)
+
+. drop rcm rcm2
+
+. rename rcmfinal rcm
+
+. summarize rcm
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+         rcm |     15,918    60.24507    8.820183         32         91
+
+. gen rmfinal=rm+rm2
+(2,037 missing values generated)
+
+. drop rm rm2
+
+. rename rmfinal rm
+
+. summarize rm
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+          rm |     15,918    61.76423    9.262013         29         93
+
+. gen lwbfinal=lwb+lwb2
+(2,037 missing values generated)
+
+. drop lwb lwb2
+
+. rename lwbfinal lwb
+
+. summarize lwb
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+         lwb |     15,918    59.51853     8.99135         32         88
+
+. gen ldmfinal=ldm+ldm2
+(2,037 missing values generated)
+
+. drop ldm ldm2
+
+. rename ldmfinal ldm
+
+. summarize ldm
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+         ldm |     15,918    58.83032    10.10195         30         90
+
+. gen cdmfinal=cdm+cdm2
+(2,037 missing values generated)
+
+. drop cdm cdm2
+
+. rename cdmfinal cdm
+
+. summarize cdm
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+         cdm |     15,918    58.83032    10.10195         30         90
+
+. gen rdmfinal=rdm+rdm2
+(2,037 missing values generated)
+
+. drop rdm rdm2
+
+. rename rdmfinal rdm
+
+. summarize rdm
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+         rdm |     15,918    58.83032    10.10195         30         90
+
+. gen rwbfinal=rwb+rwb2
+(2,037 missing values generated)
+
+. drop rwb rwb2
+
+. rename rwbfinal rwb
+
+. summarize rwb
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+         rwb |     15,918    59.51853     8.99135         32         88
+
+. gen lbfinal=lb+lb2
+(2,037 missing values generated)
+
+. drop lb lb2
+
+. rename lbfinal lb
+
+. summarize lb
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+          lb |     15,918    58.80758      9.5458         31         87
+
+. gen lcbfinal=lcb+lcb2
+(2,037 missing values generated)
+
+. drop lcb lcb2
+
+. rename lcbfinal lcb
+
+. summarize lcb
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+         lcb |     15,918    57.61182     11.7224         27         90
+
+. gen cbfinal=cb+cb2
+(2,037 missing values generated)
+
+. drop cb cb2
+
+. rename cbfinal cb
+
+. summarize cb
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+          cb |     15,918    57.61182     11.7224         27         90
+
+. gen rcbfinal=rcb+rcb2
+(2,037 missing values generated)
+
+. drop rcb rcb2
+
+. rename rcbfinal rcb
+
+. summarize rcb
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+         rcb |     15,918    57.61182     11.7224         27         90
+
+. gen rbfinal=rb+rb2
+(2,037 missing values generated)
+
+. drop rb rb2
+
+. rename rbfinal rb
+
+. summarize rb
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+          rb |     15,918    58.80758      9.5458         31         87
+
+. 
+. 
+. 
+. 
+. *save
+. save "F:\fifa\stata\fifadata_cleaned.dta", replace
+file F:\fifa\stata\fifadata_cleaned.dta saved
+
+. export delimited "F:\fifa\stata\fifadata_cleaned.csv", replace
+file F:\fifa\stata\fifadata_cleaned.csv saved
+
+. 
+. 
+. 
+. 
+. log close
+      name:  <unnamed>
+       log:  F:\fifa\stata\fifadata_cleaning.log
+  log type:  text
+ closed on:  18 Feb 2019, 23:55:15
+-------------------------------------------------------------------------------
