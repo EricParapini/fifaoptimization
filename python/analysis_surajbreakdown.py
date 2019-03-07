@@ -54,9 +54,22 @@ prob += total_skill,"Maximize Skill"
 
 ## Create some limits
 # Create a budget = 1M
-budget = 1000000
-total_wage = sum(x * w for x,w in zip(selection,wage))
-prob += total_wage <= budget
+gk_budget = 100000
+def_budget = 300000
+mid_budget = 350000
+stk_budget = 250000
+
+gk_wage = sum(x * w * gk for x,w,gk in zip(selection,wage,is_goalkeeper))
+prob += gk_wage <= gk_budget
+
+def_wage = sum(x * w * defense for x,w,defense in zip(selection,wage,is_defense))
+prob += def_wage <= def_budget
+
+mid_wage = sum(x * w * mid for x,w,mid in zip(selection,wage,is_midfield))
+prob += mid_wage <= mid_budget
+
+stk_wage = sum(x * w * stk for x,w,stk in zip(selection,wage,is_offense))
+prob += stk_wage <= stk_budget
 
 total_gk = sum(x * gk for x,gk in zip(selection,is_goalkeeper))
 prob += total_gk == 1
