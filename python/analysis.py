@@ -29,7 +29,7 @@ is_offense = []
 # Populate the Constraint Matrices
 for row in a:
     overall.append(int(float(row[7])))
-    wage.append((int(float(row[12]))))
+    wage.append(int(float(row[12])))
     is_goalkeeper.append(int(float(row[90])))
     is_defense.append(int(float(row[91])))
     is_midfield.append(int(float(row[92])))
