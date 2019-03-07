@@ -1,5 +1,5 @@
 #!/usr/bin/python
-from pulp import *
+import cvxpy as cp
 import csv
 import numpy as np
 
@@ -12,12 +12,12 @@ reader = csv.reader(fifa_data_file)
 next(reader)
 rownum = 0
 a = []
-selection = []
 for row in reader:
     a.append(row)
-    selection.append(LpVariable("Player_"+str(rownum),0,None,LpBinary))
     rownum += 1
+
 fifa_data_file.close()
+
 a = np.array(a)
 
 overall = []
@@ -26,14 +26,15 @@ is_goalkeeper = []
 is_defense = []
 is_midfield = []
 is_offense = []
+
 # Populate the Constraint Matrices
 for row in a:
-    overall.append((int(float(row[7]))))
-    wage.append((int(float(row[12]))))
-    is_goalkeeper.append((int(float(row[90]))))
-    is_defense.append((int(float(row[91]))))
-    is_midfield.append((int(float(row[92]))))
-    is_offense.append((int(float(row[93]))))
+    overall.append(row[7])
+    wage.append(row[12])
+    is_goalkeeper.append(row[90])
+    is_defense.append(row[91])
+    is_midfield.append(row[92])
+    is_offense.append(row[93])
 
 # Convert all to NumpyArrays to save some space
 overall = np.array(overall)
@@ -43,29 +44,27 @@ is_defense = np.array(is_defense)
 is_midfield = np.array(is_midfield)
 is_offense = np.array(is_offense)
 
-# Begin Creating the Maximization Problem
-prob = LpProblem('Fifa Team', LpMaximize)
 
+# Create the selection variable
+selection = cp.Variable(shape=len(overall),boolean=True)
 
 ## Set the objective function
 # maximise skill
-total_skill = sum(x * obj for x,obj in zip(selection,overall))
-prob += total_skill,"Maximize Skill"
+total_overall = overall * selection
+constr1 = ( selection >= 5)
+constr2 = ( selection <= 5)
+
 
 ## Create some limits
 # Create a budget = 1M
 budget = 1000000
-total_wage = sum(x * w for x,w in zip(selection,wage))
-prob += total_wage <= budget
 
-# Create player count
-total_players = sum(x * 1 for x in selection)
-prob += total_players == 11
+fifa_team = cp.Problem(cp.Maximize(total_overall),[constr1,constr2])
 
-prob.solve()
-print("Status: ",LpStatus[prob.status])
+fifa_team.solve(solver=cp.ECOS_BB)
+print(f"Optimal Team Ability is {fifa_team.value} with a budget of {budget}")
 
-for v in prob.variables():
-    print(v.name, "=", v.varValue)
-
-print("Maximized Skill = ", value(prob.objective))
+print("Team Selection is:")
+print(selection.value)
+for x in selection:
+    print (x.value)
