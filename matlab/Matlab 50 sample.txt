@@ -1,0 +1,8 @@
+filename = 'sample.csv'
+M = csvread(filename,2,0)
+[m,n] = size(M);
+x = binvar(m,1);
+Objective = x'*M(:,1);
+Constraints = [x'*M(:,2) <= 1000000; x >=0,x'* M(:,3) == 1,  x'* M(:,4) == 4,  x'* M(:,5) == 4, x'* M(:,6) == 2];
+optimize(Constraints,-Objective)
+value(x)
