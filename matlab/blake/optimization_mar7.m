@@ -23,7 +23,7 @@ Constraints = [Constraints, x'* M(:,6) == 4];
     %offence
 Constraints = [Constraints, x'* M(:,7) == 2];
 
-%colve
+%solve
 optimize(Constraints,-Objective)
 
 %values
