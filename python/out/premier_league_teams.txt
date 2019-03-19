@@ -1,0 +1,768 @@
+Team: Arsenal.csv Status: Optimal
+Maximized Skill =  913.0
+Player_10424 = 0.0
+Player_11579 = 0.0
+Player_11765 = 0.0
+Player_12497 = 0.0
+Player_131 = 1.0
+Player_13999 = 0.0
+Player_146 = 1.0
+Player_1495 = 0.0
+Player_15157 = 0.0
+Player_16216 = 0.0
+Player_199 = 1.0
+Player_235 = 0.0
+Player_281 = 1.0
+Player_289 = 1.0
+Player_311 = 1.0
+Player_317 = 0.0
+Player_33 = 1.0
+Player_3392 = 0.0
+Player_364 = 0.0
+Player_4590 = 0.0
+Player_464 = 0.0
+Player_4719 = 0.0
+Player_520 = 1.0
+Player_606 = 0.0
+Player_6136 = 0.0
+Player_6937 = 0.0
+Player_7069 = 0.0
+Player_723 = 0.0
+Player_74 = 1.0
+Player_789 = 0.0
+Player_87 = 1.0
+Player_933 = 1.0
+Player_959 = 0.0
+
+
+
+
+Team: Bouernemonth.csv Status: Optimal
+Maximized Skill =  852.0
+Player_1027 = 1.0
+Player_1127 = 1.0
+Player_13763 = 0.0
+Player_14136 = 0.0
+Player_1444 = 1.0
+Player_14553 = 0.0
+Player_14575 = 0.0
+Player_15333 = 0.0
+Player_15435 = 0.0
+Player_15521 = 0.0
+Player_1568 = 1.0
+Player_1583 = 0.0
+Player_15923 = 0.0
+Player_16197 = 0.0
+Player_16198 = 0.0
+Player_16290 = 0.0
+Player_1908 = 0.0
+Player_1979 = 0.0
+Player_2009 = 1.0
+Player_2312 = 0.0
+Player_2447 = 0.0
+Player_2550 = 0.0
+Player_2682 = 0.0
+Player_4512 = 0.0
+Player_5370 = 0.0
+Player_5431 = 0.0
+Player_595 = 1.0
+Player_604 = 1.0
+Player_653 = 1.0
+Player_704 = 1.0
+Player_889 = 1.0
+Player_938 = 1.0
+
+
+
+
+Team: Brighton&HoveAlbion.csv Status: Optimal
+Maximized Skill =  846.0
+Player_1051 = 1.0
+Player_1056 = 1.0
+Player_1184 = 1.0
+Player_13846 = 0.0
+Player_13895 = 0.0
+Player_13945 = 0.0
+Player_1400 = 0.0
+Player_14456 = 0.0
+Player_1446 = 0.0
+Player_15893 = 0.0
+Player_16128 = 0.0
+Player_1615 = 1.0
+Player_1727 = 0.0
+Player_17380 = 0.0
+Player_1783 = 1.0
+Player_2273 = 0.0
+Player_2380 = 0.0
+Player_2610 = 0.0
+Player_2761 = 0.0
+Player_2920 = 0.0
+Player_3258 = 0.0
+Player_3793 = 0.0
+Player_6368 = 0.0
+Player_647 = 1.0
+Player_7492 = 0.0
+Player_8371 = 0.0
+Player_842 = 1.0
+Player_915 = 1.0
+Player_9300 = 0.0
+Player_944 = 1.0
+Player_963 = 1.0
+Player_999 = 1.0
+
+
+
+
+Team: Burnley.csv Status: Optimal
+Maximized Skill =  859.0
+Player_1040 = 1.0
+Player_1080 = 1.0
+Player_11343 = 0.0
+Player_1151 = 1.0
+Player_11969 = 0.0
+Player_1234 = 1.0
+Player_1250 = 0.0
+Player_13160 = 0.0
+Player_1453 = 1.0
+Player_1630 = 0.0
+Player_16386 = 0.0
+Player_16506 = 0.0
+Player_16851 = 0.0
+Player_16946 = 0.0
+Player_16979 = 0.0
+Player_17103 = 0.0
+Player_17114 = 0.0
+Player_1773 = 0.0
+Player_1977 = 0.0
+Player_2471 = 0.0
+Player_2529 = 0.0
+Player_2530 = 0.0
+Player_2833 = 0.0
+Player_3784 = 0.0
+Player_463 = 1.0
+Player_468 = 1.0
+Player_531 = 1.0
+Player_664 = 1.0
+Player_668 = 1.0
+Player_710 = 0.0
+Player_7145 = 0.0
+Player_718 = 0.0
+Player_880 = 1.0
+
+
+
+
+Team: CardiffC.csv Status: Optimal
+Maximized Skill =  814.0
+Player_10140 = 0.0
+Player_11532 = 0.0
+Player_1467 = 1.0
+Player_15848 = 0.0
+Player_16357 = 0.0
+Player_17456 = 0.0
+Player_17544 = 0.0
+Player_17546 = 0.0
+Player_17796 = 0.0
+Player_1849 = 1.0
+Player_1876 = 1.0
+Player_2107 = 1.0
+Player_2159 = 1.0
+Player_2293 = 1.0
+Player_2388 = 1.0
+Player_2451 = 1.0
+Player_2876 = 0.0
+Player_3000 = 1.0
+Player_3167 = 1.0
+Player_3175 = 0.0
+Player_3871 = 0.0
+Player_3912 = 1.0
+Player_4080 = 0.0
+Player_4426 = 0.0
+Player_4761 = 0.0
+Player_5136 = 0.0
+Player_5698 = 0.0
+Player_5730 = 0.0
+Player_6009 = 0.0
+Player_6116 = 0.0
+Player_6498 = 0.0
+Player_7450 = 0.0
+Player_7704 = 0.0
+
+
+
+
+Team: Chelsea.csv Status: Optimal
+Maximized Skill =  931.0
+Player_10801 = 0.0
+Player_1085 = 0.0
+Player_121 = 1.0
+Player_1287 = 0.0
+Player_14 = 1.0
+Player_140 = 1.0
+Player_14603 = 0.0
+Player_14646 = 0.0
+Player_15322 = 0.0
+Player_15846 = 0.0
+Player_1664 = 0.0
+Player_16806 = 0.0
+Player_176 = 1.0
+Player_177 = 1.0
+Player_200 = 1.0
+Player_209 = 1.0
+Player_219 = 1.0
+Player_257 = 1.0
+Player_265 = 0.0
+Player_283 = 0.0
+Player_304 = 0.0
+Player_3311 = 0.0
+Player_336 = 0.0
+Player_3937 = 0.0
+Player_5 = 1.0
+Player_5121 = 0.0
+Player_534 = 0.0
+Player_590 = 0.0
+Player_641 = 0.0
+Player_646 = 0.0
+Player_681 = 0.0
+Player_69 = 1.0
+Player_858 = 0.0
+
+
+
+
+Team: CrystalP.csv Status: Optimal
+Maximized Skill =  856.0
+Player_1276 = 0.0
+Player_1325 = 1.0
+Player_1393 = 1.0
+Player_1465 = 1.0
+Player_1492 = 1.0
+Player_15305 = 0.0
+Player_15910 = 0.0
+Player_16316 = 0.0
+Player_16369 = 0.0
+Player_16694 = 0.0
+Player_16741 = 0.0
+Player_17073 = 0.0
+Player_1780 = 0.0
+Player_2011 = 0.0
+Player_2016 = 1.0
+Player_2586 = 0.0
+Player_2660 = 0.0
+Player_270 = 1.0
+Player_2730 = 0.0
+Player_2799 = 0.0
+Player_3797 = 0.0
+Player_4313 = 0.0
+Player_500 = 1.0
+Player_5182 = 0.0
+Player_5437 = 0.0
+Player_5557 = 0.0
+Player_598 = 1.0
+Player_610 = 1.0
+Player_6861 = 0.0
+Player_691 = 1.0
+Player_7698 = 0.0
+Player_881 = 1.0
+
+
+
+
+Team: Everton.csv Status: Optimal
+Maximized Skill =  885.0
+Player_1009 = 0.0
+Player_1078 = 0.0
+Player_1198 = 0.0
+Player_13134 = 0.0
+Player_14225 = 0.0
+Player_15007 = 0.0
+Player_15577 = 0.0
+Player_180 = 1.0
+Player_1814 = 0.0
+Player_198 = 1.0
+Player_1993 = 0.0
+Player_2148 = 0.0
+Player_2834 = 0.0
+Player_292 = 1.0
+Player_3183 = 0.0
+Player_3235 = 0.0
+Player_444 = 1.0
+Player_451 = 1.0
+Player_457 = 1.0
+Player_475 = 1.0
+Player_5114 = 0.0
+Player_517 = 1.0
+Player_560 = 1.0
+Player_617 = 1.0
+Player_659 = 1.0
+Player_6750 = 0.0
+Player_699 = 0.0
+Player_708 = 0.0
+Player_767 = 0.0
+Player_8463 = 0.0
+Player_8694 = 0.0
+Player_945 = 0.0
+
+
+
+
+Team: Fulham.csv Status: Optimal
+Maximized Skill =  837.0
+Player_1021 = 1.0
+Player_1088 = 1.0
+Player_10989 = 0.0
+Player_1329 = 1.0
+Player_15295 = 0.0
+Player_16000 = 0.0
+Player_16155 = 0.0
+Player_16190 = 0.0
+Player_16603 = 0.0
+Player_16877 = 0.0
+Player_16944 = 0.0
+Player_17369 = 0.0
+Player_1800 = 1.0
+Player_1877 = 1.0
+Player_1992 = 1.0
+Player_2230 = 0.0
+Player_2421 = 0.0
+Player_2423 = 0.0
+Player_2425 = 1.0
+Player_2526 = 1.0
+Player_2573 = 1.0
+Player_2877 = 0.0
+Player_3115 = 0.0
+Player_331 = 1.0
+Player_3438 = 0.0
+Player_3982 = 0.0
+Player_4528 = 0.0
+Player_5155 = 0.0
+Player_5664 = 0.0
+Player_609 = 1.0
+Player_696 = 0.0
+Player_7342 = 0.0
+
+
+
+
+Team: HuddersfieldTown.csv Status: Optimal
+Maximized Skill =  829.0
+Player_10680 = 0.0
+Player_1134 = 1.0
+Player_1213 = 1.0
+Player_12380 = 0.0
+Player_14455 = 0.0
+Player_1560 = 1.0
+Player_15680 = 0.0
+Player_16110 = 0.0
+Player_16112 = 0.0
+Player_16360 = 0.0
+Player_16361 = 0.0
+Player_16452 = 0.0
+Player_1663 = 1.0
+Player_17079 = 0.0
+Player_1812 = 1.0
+Player_1971 = 1.0
+Player_2147 = 0.0
+Player_2334 = 1.0
+Player_2506 = 0.0
+Player_2621 = 0.0
+Player_2658 = 0.0
+Player_3018 = 1.0
+Player_3346 = 1.0
+Player_3468 = 0.0
+Player_3598 = 0.0
+Player_4100 = 0.0
+Player_4125 = 0.0
+Player_5175 = 0.0
+Player_6862 = 0.0
+Player_7754 = 0.0
+Player_831 = 1.0
+Player_839 = 1.0
+
+
+
+
+Team: LeicesterCity.csv Status: Optimal
+Maximized Skill =  872.0
+Player_10391 = 0.0
+Player_11584 = 0.0
+Player_13203 = 0.0
+Player_13303 = 0.0
+Player_1346 = 0.0
+Player_13602 = 0.0
+Player_149 = 1.0
+Player_1519 = 0.0
+Player_1666 = 1.0
+Player_1691 = 0.0
+Player_1869 = 0.0
+Player_1930 = 0.0
+Player_1946 = 1.0
+Player_1947 = 0.0
+Player_1967 = 0.0
+Player_1984 = 0.0
+Player_2332 = 0.0
+Player_251 = 1.0
+Player_259 = 1.0
+Player_2907 = 0.0
+Player_3197 = 0.0
+Player_3301 = 0.0
+Player_341 = 1.0
+Player_3528 = 0.0
+Player_425 = 1.0
+Player_4596 = 0.0
+Player_5262 = 0.0
+Player_6537 = 0.0
+Player_670 = 1.0
+Player_685 = 1.0
+Player_742 = 1.0
+Player_922 = 1.0
+
+
+
+
+Team: Liverpool.csv Status: Optimal
+Maximized Skill =  915.0
+Player_1063 = 1.0
+Player_118 = 1.0
+Player_1194 = 0.0
+Player_13503 = 0.0
+Player_13961 = 0.0
+Player_14036 = 0.0
+Player_14252 = 0.0
+Player_14674 = 0.0
+Player_15378 = 0.0
+Player_15627 = 0.0
+Player_161 = 0.0
+Player_2405 = 0.0
+Player_241 = 1.0
+Player_26 = 1.0
+Player_296 = 0.0
+Player_302 = 0.0
+Player_368 = 1.0
+Player_370 = 0.0
+Player_409 = 0.0
+Player_4763 = 0.0
+Player_481 = 0.0
+Player_483 = 1.0
+Player_515 = 0.0
+Player_529 = 1.0
+Player_58 = 1.0
+Player_59 = 1.0
+Player_61 = 1.0
+Player_665 = 0.0
+Player_703 = 0.0
+Player_735 = 0.0
+Player_755 = 0.0
+Player_81 = 1.0
+Player_8853 = 0.0
+
+
+
+
+Team: ManchesterC.csv Status: Optimal
+Maximized Skill =  950.0
+Player_107 = 1.0
+Player_113 = 1.0
+Player_13 = 1.0
+Player_1304 = 0.0
+Player_13211 = 0.0
+Player_135 = 1.0
+Player_136 = 1.0
+Player_13814 = 0.0
+Player_14197 = 0.0
+Player_14511 = 0.0
+Player_15210 = 0.0
+Player_156 = 0.0
+Player_16403 = 0.0
+Player_17451 = 0.0
+Player_182 = 0.0
+Player_23 = 1.0
+Player_2903 = 0.0
+Player_352 = 0.0
+Player_4 = 1.0
+Player_4652 = 0.0
+Player_514 = 0.0
+Player_55 = 0.0
+Player_56 = 0.0
+Player_57 = 1.0
+Player_60 = 1.0
+Player_6316 = 0.0
+Player_645 = 0.0
+Player_6559 = 0.0
+Player_75 = 1.0
+Player_84 = 0.0
+Player_871 = 0.0
+Player_89 = 1.0
+Player_8966 = 0.0
+
+
+
+
+Team: ManchesterUnited.csv Status: Optimal
+Maximized Skill =  920.0
+Player_10087 = 0.0
+Player_10457 = 0.0
+Player_10461 = 0.0
+Player_11081 = 0.0
+Player_11422 = 0.0
+Player_116 = 0.0
+Player_12545 = 0.0
+Player_1313 = 0.0
+Player_132 = 1.0
+Player_211 = 1.0
+Player_250 = 0.0
+Player_254 = 1.0
+Player_2561 = 0.0
+Player_3 = 1.0
+Player_319 = 0.0
+Player_327 = 1.0
+Player_3451 = 0.0
+Player_374 = 0.0
+Player_377 = 1.0
+Player_399 = 0.0
+Player_45 = 1.0
+Player_4513 = 0.0
+Player_454 = 1.0
+Player_47 = 1.0
+Player_526 = 0.0
+Player_584 = 0.0
+Player_629 = 0.0
+Player_654 = 0.0
+Player_700 = 0.0
+Player_717 = 1.0
+Player_807 = 0.0
+Player_8191 = 0.0
+Player_93 = 1.0
+
+
+
+
+Team: NewcastleUnited.csv Status: Optimal
+Maximized Skill =  846.0
+Player_11206 = 0.0
+Player_11426 = 0.0
+Player_1203 = 0.0
+Player_12178 = 0.0
+Player_1256 = 0.0
+Player_1295 = 1.0
+Player_1339 = 1.0
+Player_1344 = 1.0
+Player_1372 = 1.0
+Player_13969 = 0.0
+Player_13995 = 0.0
+Player_1547 = 1.0
+Player_16347 = 0.0
+Player_16471 = 0.0
+Player_16743 = 0.0
+Player_1706 = 0.0
+Player_17143 = 0.0
+Player_1831 = 0.0
+Player_1858 = 0.0
+Player_2114 = 0.0
+Player_2129 = 0.0
+Player_2150 = 0.0
+Player_2718 = 0.0
+Player_3224 = 0.0
+Player_3330 = 0.0
+Player_3947 = 0.0
+Player_768 = 1.0
+Player_8004 = 0.0
+Player_830 = 1.0
+Player_850 = 1.0
+Player_884 = 1.0
+Player_927 = 1.0
+Player_970 = 1.0
+
+
+
+
+Team: Southampton.csv Status: Optimal
+Maximized Skill =  855.0
+Player_1001 = 1.0
+Player_1058 = 1.0
+Player_1083 = 1.0
+Player_1224 = 0.0
+Player_12412 = 0.0
+Player_12625 = 0.0
+Player_14029 = 0.0
+Player_1417 = 0.0
+Player_14532 = 0.0
+Player_1454 = 0.0
+Player_14741 = 0.0
+Player_14745 = 0.0
+Player_14764 = 0.0
+Player_14937 = 0.0
+Player_1494 = 1.0
+Player_15340 = 0.0
+Player_1656 = 0.0
+Player_1697 = 0.0
+Player_1895 = 0.0
+Player_2494 = 0.0
+Player_2523 = 0.0
+Player_2606 = 0.0
+Player_3981 = 0.0
+Player_4439 = 0.0
+Player_467 = 1.0
+Player_4897 = 0.0
+Player_6170 = 0.0
+Player_623 = 1.0
+Player_706 = 1.0
+Player_793 = 1.0
+Player_846 = 1.0
+Player_894 = 1.0
+Player_925 = 1.0
+
+
+
+
+Team: TottenhamHotspur.csv Status: Optimal
+Maximized Skill =  931.0
+Player_1015 = 0.0
+Player_10172 = 0.0
+Player_110 = 1.0
+Player_1129 = 0.0
+Player_11347 = 0.0
+Player_1147 = 0.0
+Player_11585 = 0.0
+Player_117 = 1.0
+Player_125 = 1.0
+Player_1333 = 1.0
+Player_13778 = 0.0
+Player_14521 = 0.0
+Player_14537 = 0.0
+Player_14545 = 0.0
+Player_16 = 1.0
+Player_1743 = 0.0
+Player_186 = 0.0
+Player_2025 = 0.0
+Player_220 = 1.0
+Player_2335 = 0.0
+Player_290 = 1.0
+Player_31 = 1.0
+Player_348 = 0.0
+Player_37 = 1.0
+Player_3723 = 0.0
+Player_395 = 0.0
+Player_396 = 0.0
+Player_470 = 0.0
+Player_482 = 0.0
+Player_505 = 0.0
+Player_51 = 1.0
+Player_5949 = 0.0
+Player_71 = 1.0
+
+
+
+
+Team: Watford.csv Status: Optimal
+Maximized Skill =  853.0
+Player_1105 = 1.0
+Player_1188 = 1.0
+Player_1241 = 0.0
+Player_12802 = 0.0
+Player_1314 = 1.0
+Player_1347 = 1.0
+Player_1441 = 1.0
+Player_14845 = 0.0
+Player_15419 = 0.0
+Player_15743 = 0.0
+Player_1650 = 0.0
+Player_17989 = 0.0
+Player_2013 = 1.0
+Player_2256 = 0.0
+Player_2337 = 0.0
+Player_2359 = 0.0
+Player_2387 = 0.0
+Player_2436 = 0.0
+Player_2439 = 0.0
+Player_2454 = 0.0
+Player_3015 = 0.0
+Player_3116 = 0.0
+Player_344 = 1.0
+Player_469 = 1.0
+Player_4716 = 0.0
+Player_491 = 1.0
+Player_7806 = 0.0
+Player_875 = 1.0
+Player_926 = 1.0
+
+
+
+
+Team: WestHampton.csv Status: Optimal
+Maximized Skill =  876.0
+Player_1014 = 0.0
+Player_1034 = 0.0
+Player_1082 = 1.0
+Player_11037 = 0.0
+Player_1152 = 1.0
+Player_1265 = 0.0
+Player_1274 = 0.0
+Player_13361 = 0.0
+Player_13467 = 0.0
+Player_1462 = 0.0
+Player_1485 = 0.0
+Player_1566 = 0.0
+Player_15775 = 0.0
+Player_15919 = 0.0
+Player_1595 = 0.0
+Player_16323 = 0.0
+Player_16623 = 0.0
+Player_185 = 1.0
+Player_2676 = 0.0
+Player_2937 = 0.0
+Player_294 = 1.0
+Player_380 = 1.0
+Player_400 = 1.0
+Player_422 = 1.0
+Player_486 = 1.0
+Player_671 = 1.0
+Player_695 = 1.0
+Player_8155 = 0.0
+Player_8349 = 0.0
+Player_847 = 0.0
+Player_946 = 1.0
+Player_952 = 0.0
+
+
+
+
+Team: WolverhamptonWanderescsv.csv Status: Optimal
+Maximized Skill =  850.0
+Player_1193 = 1.0
+Player_13829 = 0.0
+Player_15261 = 0.0
+Player_15587 = 0.0
+Player_15916 = 0.0
+Player_16159 = 0.0
+Player_16560 = 0.0
+Player_1658 = 0.0
+Player_1662 = 0.0
+Player_16863 = 0.0
+Player_17352 = 0.0
+Player_17393 = 0.0
+Player_17503 = 0.0
+Player_1968 = 0.0
+Player_1974 = 1.0
+Player_213 = 1.0
+Player_2189 = 0.0
+Player_2429 = 1.0
+Player_2634 = 0.0
+Player_3125 = 0.0
+Player_3269 = 0.0
+Player_401 = 1.0
+Player_429 = 1.0
+Player_601 = 1.0
+Player_756 = 1.0
+Player_7801 = 0.0
+Player_794 = 1.0
+Player_823 = 1.0
+Player_8538 = 0.0
+Player_8700 = 1.0
+Player_9245 = 0.0
+Player_9527 = 0.0
+Player_9791 = 0.0
+
+
+
+

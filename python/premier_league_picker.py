@@ -1,20 +1,15 @@
 #!/usr/bin/python
 import os
-from multiprocessing import Process
+import multiprocessing
 from pulp import *
 import csv
 import numpy as np
 import os
 
-def create_distribution():
-    return 1
-
-def output_solver_results(file,prob):
-    print(f"Team: {file} Status: {LpStatus[prob.status]}")
-    print("Maximized Skill = ", value(prob.objective))
+def output_solver_results(name,prob):
     for v in prob.variables():
-        print(v.name, "=", v.varValue)
-    print("\n\n\n")
+        name_id_split = v.name.split('_')
+        print(name,"\t",name_id_split[0],"\t",name_id_split[1],"\t", v.varValue)
 
 def setup_selection_a(path,encoding):
     opened_csv = open(path,encoding=encoding)
@@ -51,8 +46,6 @@ def create_generic_constraint_arrays(a,with_wage):
         return np.array(overall), np.array(wage), np.array(is_goalkeeper), np.array(is_defense), np.array(is_midfield), np.array(is_offense)
     return np.array(overall), np.array(is_goalkeeper), np.array(is_defense), np.array(is_midfield), np.array(is_offense)
 
-
-
 # Allows for more dynamic formation constraint setting
 def create_formation(prob,selection,gk_count,gk_array,def_count,def_array,mid_count,mid_array,off_count,off_array):
     total_gk = sum(x * gk for x,gk in zip(selection,gk_array))
@@ -80,6 +73,7 @@ def team_distribution(prob,selection,min_gk_count,gk_array,min_def_count,def_arr
 
 def create_premier_league():
     premier_teams = os.listdir('../data/Premier League Teams/')
+    premier_team_return = []
     for file in premier_teams:
         a, selection = setup_selection_a('../data/Premier League Teams/'+ file,'cp1252')
         overall, is_goalkeeper, is_defense, is_midfield, is_offense = create_generic_constraint_arrays(a,False)
@@ -95,11 +89,11 @@ def create_premier_league():
         prob = create_formation(prob,selection,1,is_goalkeeper,4,is_defense,4,is_midfield,2,is_offense)
         
         prob.solve()
-        output_solver_results(file,prob)
-
+        premier_team_return.append([file,prob])
+    return premier_team_return
 
 def create_premier_disrupter(budget):
-    print(f"Team with budget of {budget} under calculation by process{os.getpid()}")
+    #print(f"Team with budget of {budget} under calculation by process{os.getpid()}")
     a, selection = setup_selection_a('../data/ButPremier.csv','cp1252')
     overall, wage, is_goalkeeper, is_defense, is_midfield, is_offense = create_generic_constraint_arrays(a,True)
     prob = LpProblem('Fifa Team', LpMaximize)
@@ -117,24 +111,20 @@ def create_premier_disrupter(budget):
     prob += total_wage <= budget
     prob.solve()
     print(f"Disrupter with budget of {budget}")
-    output_solver_results('Disrupter',prob)
-
-
+    #output_solver_results('Disrupter',prob)
+    return [budget,prob]
 
 def main():
-    dist = create_distribution()
-    #create_premier_league()
-    
-    #Make multiprocessed
+    # premier_teams[0][0] = Team Name, premier_teams[0][1] = Team prob
+    premier_teams = create_premier_league()
+    for item in premier_teams:
+        output_solver_results(item[0],item[1])
+    ## Make multiprocessed
     budgets = [1500000,1750000,2000000,2250000,2500000]
-    procs = []
-    for budget in budgets:
-        proc = Process(target=create_premier_disrupter,args=(budget,))
-        procs.append(proc)
-        proc.start()
-    
-    for proc in procs:
-        proc.join()
+    pool = multiprocessing.Pool(processes=6)
+    new_teams = pool.map(create_premier_disrupter, budgets)
+    for item in new_teams:
+        output_solver_results(item[0],item[1])
 
 if __name__ == "__main__":
     main()
