@@ -65,7 +65,7 @@ def create_formation(prob,selection,gk_count,gk_array,def_count,def_array,mid_co
     prob += total_offense == off_count
     return prob
 
-def team_distribution(prob,selection,min_gk_count,gk_array,min_def_count,def_array,min_mid_count,mid_array,min_off_count,off_array):
+def team_distribution(prob,selection,min_gk_count,gk_array,min_def_count,def_array,min_mid_count,mid_array,min_off_count,off_array,max_team_size):
     total_gk = sum(x * gk for x,gk in zip(selection,gk_array))
     prob += total_gk >= min_gk_count
     total_defense = sum(x * defense for x,defense in zip(selection,def_array))
@@ -74,6 +74,8 @@ def team_distribution(prob,selection,min_gk_count,gk_array,min_def_count,def_arr
     prob += total_midfield >= min_mid_count
     total_offense = sum(x * off for x,off in zip(selection,off_array))
     prob += total_offense >= min_off_count
+    total_players = sum(x for x in selection)
+    prob += total_players <= max_team_size
     return prob
 
 def create_premier_league():
@@ -101,12 +103,15 @@ def create_premier_disrupter(budget):
     a, selection = setup_selection_a('../data/ButPremier.csv','cp1252')
     overall, wage, is_goalkeeper, is_defense, is_midfield, is_offense = create_generic_constraint_arrays(a,True)
     prob = LpProblem('Fifa Team', LpMaximize)
+    
     ## Set the objective function
     # maximise skill
     total_skill = sum(x * obj for x,obj in zip(selection,overall))
     prob += total_skill,"Maximize Skill"
+    
     # Specify team distribution
-    prob = team_distribution(prob,selection,3,is_goalkeeper,10,is_defense,10,is_midfield,5,is_offense)
+    prob = team_distribution(prob,selection,3,is_goalkeeper,10,is_defense,10,is_midfield,5,is_offense,33)
+    
     # Use the wage specification
     total_wage = sum(x * w for x,w in zip(selection,wage))
     prob += total_wage <= budget
