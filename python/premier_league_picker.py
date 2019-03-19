@@ -9,7 +9,7 @@ import os
 def output_solver_results(name,prob):
     for v in prob.variables():
         name_id_split = v.name.split('_')
-        print(name,"\t",name_id_split[0],"\t",name_id_split[1],"\t", v.varValue)
+        print(name,"\t",name_id_split[0],"\t",name_id_split[1],"\t",v.varValue)
 
 def setup_selection_a(path,encoding):
     opened_csv = open(path,encoding=encoding)
@@ -117,14 +117,10 @@ def create_premier_disrupter(budget):
 def main():
     # premier_teams[0][0] = Team Name, premier_teams[0][1] = Team prob
     premier_teams = create_premier_league()
-    for item in premier_teams:
-        output_solver_results(item[0],item[1])
-    ## Make multiprocessed
     budgets = [1500000,1750000,2000000,2250000,2500000]
+    ## Perform in parallel
     pool = multiprocessing.Pool(processes=6)
     new_teams = pool.map(create_premier_disrupter, budgets)
-    for item in new_teams:
-        output_solver_results(item[0],item[1])
 
 if __name__ == "__main__":
     main()
