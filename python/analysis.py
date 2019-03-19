@@ -16,7 +16,6 @@ selection = []
 for row in reader:
     a.append(row)
     selection.append(LpVariable("Player_"+str(row[0]),0,None,LpBinary))
-    rownum += 1
 fifa_data_file.close()
 a = np.array(a)
 
