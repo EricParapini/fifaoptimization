@@ -4,6 +4,53 @@ import csv
 import numpy as np
 import os
 
+def create_distribution():
+    return 1
+
+def output_solver_results(file,prob):
+    print(f"Team: {file} Status: {LpStatus[prob.status]}")
+    print("Maximized Skill = ", value(prob.objective))
+    for v in prob.variables():
+        print(v.name, "=", v.varValue)
+    print("\n\n\n")
+
+def setup_selection_a(path,encoding):
+    opened_csv = open(path,encoding=encoding)
+    reader = csv.reader(opened_csv)
+    next(reader)
+    a = []
+    selection = []
+    for row in reader:
+        a.append(row)
+        selection.append(LpVariable("Player_"+str(row[0]),0,None,LpBinary))
+    opened_csv.close()
+    return np.array(a), np.array(selection)
+
+# Create the generic constraints for the problem, include the wage if specified
+def create_generic_constraint_arrays(a,with_wage):
+    overall = []
+    wage = []
+    is_goalkeeper = []
+    is_defense = []
+    is_midfield = []
+    is_offense = []
+
+    # Populate the Constraint Matrices
+    for row in a:
+        overall.append(int(float(row[7])))
+        is_goalkeeper.append(int(float(row[90])))
+        is_defense.append(int(float(row[91])))
+        is_midfield.append(int(float(row[92])))
+        is_offense.append(int(float(row[93])))
+        if with_wage:
+            wage.append(int(float(row[12])))
+
+    if with_wage:
+        return np.array(overall), np.array(wage), np.array(is_goalkeeper), np.array(is_defense), np.array(is_midfield), np.array(is_offense)
+    return np.array(overall), np.array(is_goalkeeper), np.array(is_defense), np.array(is_midfield), np.array(is_offense)
+
+
+
 # Allows for more dynamic formation constraint setting
 def create_formation(prob,selection,gk_count,gk_array,def_count,def_array,mid_count,mid_array,off_count,off_array):
         total_gk = sum(x * gk for x,gk in zip(selection,gk_array))
@@ -19,37 +66,9 @@ def create_formation(prob,selection,gk_count,gk_array,def_count,def_array,mid_co
 def create_premier_league():
     premier_teams = os.listdir('../data/Premier League Teams/')
     for file in premier_teams:
-        premier_league_team = open('../data/Premier League Teams/'+ file,encoding='cp1252')
-        reader = csv.reader(premier_league_team)
-        next(reader)
-        a = []
-        selection = []
-
-        for row in reader:
-            a.append(row)
-            selection.append(LpVariable("Player_"+str(row[0]),0,None,LpBinary))
-        premier_league_team.close()
-        a = np.array(a)
-        overall = []
-        is_goalkeeper = []
-        is_defense = []
-        is_midfield = []
-        is_offense = []
-
-        # Populate the Constraint Matrices
-        for row in a:
-            overall.append(int(float(row[7])))
-            is_goalkeeper.append(int(float(row[90])))
-            is_defense.append(int(float(row[91])))
-            is_midfield.append(int(float(row[92])))
-            is_offense.append(int(float(row[93])))
+        a, selection = setup_selection_a('../data/Premier League Teams/'+ file,'cp1252')
+        overall, is_goalkeeper, is_defense, is_midfield, is_offense = create_generic_constraint_arrays(a,False)
         
-        overall = np.array(overall)
-        is_goalkeeper = np.array(is_goalkeeper)
-        is_defense = np.array(is_defense)
-        is_midfield = np.array(is_midfield)
-        is_offense = np.array(is_offense)
-
         # Begin Creating the Maximization Problem
         prob = LpProblem('Fifa Team', LpMaximize)
 
@@ -61,19 +80,34 @@ def create_premier_league():
         prob = create_formation(prob,selection,1,is_goalkeeper,4,is_defense,4,is_midfield,2,is_offense)
         
         prob.solve()
-        print(f"Team: {file} Status: {LpStatus[prob.status]}")
-        print("Maximized Skill = ", value(prob.objective))
-        for v in prob.variables():
-            print(v.name, "=", v.varValue)
-
-        print("\n\n\n")
+        output_solver_results(file,prob)
 
 
-def premier_disrupter():
-    pass
+def create_premier_disrupter():
+    a, selection = setup_selection_a('../data/ButPremier.csv','cp1252')
+    overall, wage, is_goalkeeper, is_defense, is_midfield, is_offense = create_generic_constraint_arrays(a,True)
+    budget = [1500000,1750000,2000000,2250000]
+    for budget_value in budget:
+        prob = LpProblem('Fifa Team', LpMaximize)
+        ## Set the objective function
+        # maximise skill
+        total_skill = sum(x * obj for x,obj in zip(selection,overall))
+        prob += total_skill,"Maximize Skill"
+        
+        # Use the wage specification
+        total_wage = sum(x * w for x,w in zip(selection,wage))
+        prob += total_wage <= budget_value
+        prob.solve()
+        print(f"Disrupter with budget of {budget_value}")
+        output_solver_results('Disrupter',prob)
+        
+
+
 
 def main():
-    create_premier_league()
+    dist = create_distribution()
+    #create_premier_league()
+    create_premier_disrupter()
 
 if __name__ == "__main__":
     main()
