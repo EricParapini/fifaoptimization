@@ -1,4 +1,6 @@
 #!/usr/bin/python
+import os
+from multiprocessing import Process
 from pulp import *
 import csv
 import numpy as np
@@ -53,15 +55,26 @@ def create_generic_constraint_arrays(a,with_wage):
 
 # Allows for more dynamic formation constraint setting
 def create_formation(prob,selection,gk_count,gk_array,def_count,def_array,mid_count,mid_array,off_count,off_array):
-        total_gk = sum(x * gk for x,gk in zip(selection,gk_array))
-        prob += total_gk == gk_count
-        total_defense = sum(x * defense for x,defense in zip(selection,def_array))
-        prob += total_defense == def_count
-        total_midfield = sum(x * mid for x,mid in zip(selection,mid_array))
-        prob += total_midfield == mid_count
-        total_offense = sum(x * off for x,off in zip(selection,off_array))
-        prob += total_offense == off_count
-        return prob
+    total_gk = sum(x * gk for x,gk in zip(selection,gk_array))
+    prob += total_gk == gk_count
+    total_defense = sum(x * defense for x,defense in zip(selection,def_array))
+    prob += total_defense == def_count
+    total_midfield = sum(x * mid for x,mid in zip(selection,mid_array))
+    prob += total_midfield == mid_count
+    total_offense = sum(x * off for x,off in zip(selection,off_array))
+    prob += total_offense == off_count
+    return prob
+
+def team_distribution(prob,selection,min_gk_count,gk_array,min_def_count,def_array,min_mid_count,mid_array,min_off_count,off_array):
+    total_gk = sum(x * gk for x,gk in zip(selection,gk_array))
+    prob += total_gk >= min_gk_count
+    total_defense = sum(x * defense for x,defense in zip(selection,def_array))
+    prob += total_defense >= min_def_count
+    total_midfield = sum(x * mid for x,mid in zip(selection,mid_array))
+    prob += total_midfield >= min_mid_count
+    total_offense = sum(x * off for x,off in zip(selection,off_array))
+    prob += total_offense >= min_off_count
+    return prob
 
 def create_premier_league():
     premier_teams = os.listdir('../data/Premier League Teams/')
@@ -83,31 +96,40 @@ def create_premier_league():
         output_solver_results(file,prob)
 
 
-def create_premier_disrupter():
+def create_premier_disrupter(budget):
+    print(f"Team with budget of {budget} under calculation by process{os.getpid()}")
     a, selection = setup_selection_a('../data/ButPremier.csv','cp1252')
     overall, wage, is_goalkeeper, is_defense, is_midfield, is_offense = create_generic_constraint_arrays(a,True)
-    budget = [1500000,1750000,2000000,2250000]
-    for budget_value in budget:
-        prob = LpProblem('Fifa Team', LpMaximize)
-        ## Set the objective function
-        # maximise skill
-        total_skill = sum(x * obj for x,obj in zip(selection,overall))
-        prob += total_skill,"Maximize Skill"
-        
-        # Use the wage specification
-        total_wage = sum(x * w for x,w in zip(selection,wage))
-        prob += total_wage <= budget_value
-        prob.solve()
-        print(f"Disrupter with budget of {budget_value}")
-        output_solver_results('Disrupter',prob)
-        
+    prob = LpProblem('Fifa Team', LpMaximize)
+    ## Set the objective function
+    # maximise skill
+    total_skill = sum(x * obj for x,obj in zip(selection,overall))
+    prob += total_skill,"Maximize Skill"
+    # Specify team distribution
+    prob = team_distribution(prob,selection,3,is_goalkeeper,10,is_defense,10,is_midfield,5,is_offense)
+    # Use the wage specification
+    total_wage = sum(x * w for x,w in zip(selection,wage))
+    prob += total_wage <= budget
+    prob.solve()
+    print(f"Disrupter with budget of {budget}")
+    output_solver_results('Disrupter',prob)
 
 
 
 def main():
     dist = create_distribution()
     #create_premier_league()
-    create_premier_disrupter()
+    
+    #Make multiprocessed
+    budgets = [1500000,1750000,2000000,2250000,2500000]
+    procs = []
+    for budget in budgets:
+        proc = Process(target=create_premier_disrupter,args=(budget,))
+        procs.append(proc)
+        proc.start()
+    
+    for proc in procs:
+        proc.join()
 
 if __name__ == "__main__":
     main()
