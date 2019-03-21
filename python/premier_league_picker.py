@@ -113,6 +113,9 @@ def create_premier_disrupter(max_budget):
     prob += total_skill,"Maximize Skill"
     # Specify team distribution
     prob = team_distribution(prob,selection,3,is_goalkeeper,10,is_defense,10,is_midfield,5,is_offense,33)
+    # Stop picking too many goalies
+    sum_of_gk = sum(x * gk for x,gk in zip(selection,is_goalkeeper))
+    prob += sum_of_gk <= 3
     # Use the wage specification
     total_wage = sum(x * w for x,w in zip(selection,wage))
     prob += total_wage <= max_budget
