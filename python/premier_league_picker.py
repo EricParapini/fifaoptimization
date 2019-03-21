@@ -167,15 +167,47 @@ def load_spread():
     next(reader)
     spread_dict = {int(float(x[0])) : [float(x[1]),float(x[2]),float(x[3])] for x in reader}
     # E.g., spread_dict[diff][List with spread] = Win for specified difference
-    # Print the prob of a tie when diff is -3
-    # print (spread_dict[-3][1])
     return spread_dict
 
+def create_premier_team_dict(premier_teams):
+    premier_team_names = []
+    premier_teams_dict = {}
+    # Create Premier team dictionary
+    for row in premier_teams:
+        for team in row:
+            premier_team_names.append(team[0][:-4])
+            key = team[0][:-4]
+            key += ''.join(map(str,team[2]))
+            premier_teams_dict.update({key : (value(team[1].objective)/11)})
+    premier_team_names = list(dict.fromkeys(premier_team_names))
+    return premier_team_names, premier_teams_dict
+
+def create_disrupter_team_dict(disrupter_teams):
+    disrupter_team_dict = {}
+    for row in disrupter_teams:
+    # Team[0] file Team[1] = overall Team[2]=formation
+        for team in row:
+            key = (team[0].split('_')[1][:-4])+"_"+(''.join(map(str,team[2])))
+            avg_overall = (team[1]/11)
+            disrupter_team_dict.update({key : avg_overall})
+    return disrupter_team_dict
+
 # Seasons are simulated by having each team play each other twice (once home and once away)
-def simulate_league(premier_teams,disrupter_teams,seasons_to_simulate):
-    # Create the probability dictionary
+def simulate_league(premier_teams,disrupter_teams,formations,budgets,seasons_to_simulate):
+    # Fix the multiple wrappings
+    formations = formations[0]
+    ## Create the probability dictionary
+    # Print the prob of a tie when diff is -3
+    # print (spread_dict[-3][1])
     spread = load_spread()
     # Create the premier teams dictionary
+    premier_team_names, premier_teams_dict = create_premier_team_dict(premier_teams)
+    ## Create disrupter team dictionary
+    # 
+    disrupter_team_dict = create_disrupter_team_dict(disrupter_teams)
+    
+    
+
 
 def main():
     # Parse options passed in - easier to toggle full team refresh or not
@@ -184,7 +216,7 @@ def main():
     # Set an array of budgets to cover
     budgets = [250000,500000,750000,1000000,1250000,1500000,1750000,2000000,2250000,2500000,2750000,3000000]
     # Set an array of formations to cover
-    formations = [[4,4,2],[3,4,3],[4,3,3],[3,5,2]]
+    formations = [[4,4,2]]
     ## Perform in parallel - my computer has 6 cores. On my computer each process takes ~ 400MB of RAM
     pool = multiprocessing.Pool(processes=6)
     # Create different formations for the premier teams
@@ -194,7 +226,7 @@ def main():
         print("Refreshing Teams")
         pool.map(create_premier_disrupter, budgets)
     disrupter_teams = pool.map(create_disrupter_formation, formations)
-    simulate_league(premier_teams,disrupter_teams,10)
+    simulate_league(premier_teams,disrupter_teams,formations,budgets,10)
 
 if __name__ == "__main__":
     main()
