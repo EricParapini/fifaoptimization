@@ -156,14 +156,18 @@ def create_disrupter_formation(formation_list):
         disrupter_team_return.append([file,value(prob.objective),formation_list])
     return disrupter_team_return
 
+def simulate_league():
+    pass
+
 def main():
     budgets = [1500000,1750000,2000000,2250000,2500000]
     formations = [[4,4,2],[3,4,3],[4,3,3],[3,5,2]]
     ## Perform in parallel
     pool = multiprocessing.Pool(processes=12)
     premier_teams = pool.map(create_premier_league, formations)
-    #new_teams = pool.map(create_premier_disrupter, budgets)
+    new_teams = pool.map(create_premier_disrupter, budgets)
     disrupter_teams = pool.map(create_disrupter_formation, formations)
+
 
 if __name__ == "__main__":
     main()
