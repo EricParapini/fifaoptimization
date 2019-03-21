@@ -6,6 +6,13 @@ import csv
 import numpy as np
 import random
 import pandas as pd
+from optparse import OptionParser
+
+def define_option_parser():
+    usage = "Usage: %prog [options]"
+    parser = OptionParser(usage)
+    parser.add_option("-r","--refresh",action="store_true",dest="refresh_disrupters",help="Specify whether the teams should be done")
+    return parser
 
 def output_solver_results(name,prob):
     for v in prob.variables():
@@ -160,13 +167,19 @@ def simulate_league():
     pass
 
 def main():
+    parser = define_option_parser()
+    (options, args) = parser.parse_args()
+
     budgets = [1500000,1750000,2000000,2250000,2500000]
     formations = [[4,4,2],[3,4,3],[4,3,3],[3,5,2]]
     ## Perform in parallel
     pool = multiprocessing.Pool(processes=12)
     premier_teams = pool.map(create_premier_league, formations)
-    new_teams = pool.map(create_premier_disrupter, budgets)
+    if options.refresh_disrupters:
+        print("Refreshing Teams")
+        new_teams = pool.map(create_premier_disrupter, budgets)
     disrupter_teams = pool.map(create_disrupter_formation, formations)
+    
 
 
 if __name__ == "__main__":
