@@ -165,26 +165,31 @@ def create_disrupter_formation(formation_list):
 
 def load_spread():
     # Open the spreads file
-    # Create the distribution dictionary
-    #Return the distribution dictionary
-    return 1
+    opened_csv = open('./res/distribution.csv',encoding='utf8')
+    reader = csv.reader(opened_csv)
+    next(reader)
+    spread_dict = {int(float(x[0])) : [float(x[1]),float(x[2]),float(x[3])] for x in reader}
+    # E.g., spread_dict[diff][List with spread] = Win for specified difference
+    # Print the prob of a tie when diff is -3
+    # print (spread_dict[-3][1])
+    return spread_dict
 
 # Seasons are simulated by having each team play each other twice (once home and once away)
 def simulate_league(premier_teams,disrupter_teams,seasons_to_simulate):
     # Create the probability dictionary
-
+    spread = load_spread()
     # Create the premier teams dictionary
-    prob_dict = load_spread()
-    pass
 
 def main():
+    # Parse options passed in - easier to toggle full team refresh or not
     parser = define_option_parser()
     (options, args) = parser.parse_args()
-
+    # Set an array of budgets to cover
     budgets = [250000,500000,750000,1000000,1250000,1500000,1750000,2000000,2250000,2500000,2750000,3000000]
+    # Set an array of formations to cover
     formations = [[4,4,2],[3,4,3],[4,3,3],[3,5,2]]
-    ## Perform in parallel
-    pool = multiprocessing.Pool(processes=12)
+    ## Perform in parallel - my computer has 6 cores. On my computer each process takes ~ 400MB of RAM
+    pool = multiprocessing.Pool(processes=6)
     premier_teams = pool.map(create_premier_league, formations)
     if options.refresh_disrupters:
         print("Refreshing Teams")
