@@ -8,27 +8,20 @@ import random
 import pandas as pd
 from optparse import OptionParser
 
+# Create some arguments to make script more flexible - can now specify whether we want a full team refresh (time intensive)
 def define_option_parser():
     usage = "Usage: %prog [options]"
     parser = OptionParser(usage)
     parser.add_option("-r","--refresh",action="store_true",dest="refresh_disrupters",help="Specify whether the teams should be done")
     return parser
 
+# Solver Debugging
 def output_solver_results(name,prob):
     for v in prob.variables():
         name_id_split = v.name.split('_')
         print(name,"\t",name_id_split[0],"\t",name_id_split[1],"\t",v.varValue)
 
-def dist_creation():
-    # Example of weighted random variables - useful for L/D/W
-    opened_csv = open('./distribution.csv',encoding='cp1252')
-    reader = csv.reader(opened_csv)
-    next(reader)
-    dist = []
-    for row in reader:
-        dist.append(row)
-    return dist
-
+# Setup the initial binary variables and base player array
 def setup_selection_a(path,encoding):
     opened_csv = open(path,encoding=encoding)
     reader = csv.reader(opened_csv)
@@ -79,6 +72,7 @@ def create_formation(prob,selection,gk_count,gk_array,def_count,def_array,mid_co
     prob += total_offense == off_count
     return prob
 
+# Specify the distribution of the team - how min values for GK, Defense, Mid, Offense, and max team size 
 def team_distribution(prob,selection,min_gk_count,gk_array,min_def_count,def_array,min_mid_count,mid_array,min_off_count,off_array,max_team_size):
     total_gk = sum(x * gk for x,gk in zip(selection,gk_array))
     prob += total_gk >= min_gk_count
@@ -92,6 +86,7 @@ def team_distribution(prob,selection,min_gk_count,gk_array,min_def_count,def_arr
     prob += total_players <= max_team_size
     return prob
 
+# Create the competition - iterate through premier league rosters and setup their team formations which maximized ability
 def create_premier_league(formation_list):
     premier_teams = os.listdir('../data/Premier League Teams/')
     premier_team_return = []
@@ -109,6 +104,7 @@ def create_premier_league(formation_list):
         premier_team_return.append([file,prob,formation_list])
     return premier_team_return
 
+# Create a new entrant to the premier league based on a max budget as the constraint
 def create_premier_disrupter(max_budget):
     min_from_england = 8
     a, selection = setup_selection_a('../data/butpremier.csv','utf8')
@@ -140,10 +136,10 @@ def create_premier_disrupter(max_budget):
     write_new_player_file(max_budget,player_ids)
     return [max_budget,prob]
 
+# Create team outputs for the disruptive teams based on the pased in player ID's and the team budget
 def write_new_player_file(budget,player_ids):
     df = pd.read_csv("../data/clean.csv")
     df.loc[df['Num'].isin(player_ids)].to_csv(r"../out/disrupter/disrupter_"+str(budget)+".csv", index=None, header=True)
-
 
 # Reuse the formation optimization problem in earlier results
 def create_disrupter_formation(formation_list):
@@ -163,6 +159,7 @@ def create_disrupter_formation(formation_list):
         disrupter_team_return.append([file,value(prob.objective),formation_list])
     return disrupter_team_return
 
+# Load the distribution spread from a file and create a dictionary to compare against
 def load_spread():
     # Open the spreads file
     opened_csv = open('./res/distribution.csv',encoding='utf8')
@@ -190,10 +187,12 @@ def main():
     formations = [[4,4,2],[3,4,3],[4,3,3],[3,5,2]]
     ## Perform in parallel - my computer has 6 cores. On my computer each process takes ~ 400MB of RAM
     pool = multiprocessing.Pool(processes=6)
+    # Create different formations for the premier teams
     premier_teams = pool.map(create_premier_league, formations)
+    # Specify whether the new entrants will be 
     if options.refresh_disrupters:
         print("Refreshing Teams")
-        new_teams = pool.map(create_premier_disrupter, budgets)
+        pool.map(create_premier_disrupter, budgets)
     disrupter_teams = pool.map(create_disrupter_formation, formations)
     simulate_league(premier_teams,disrupter_teams,10)
 
