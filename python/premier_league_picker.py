@@ -163,14 +163,25 @@ def create_disrupter_formation(formation_list):
         disrupter_team_return.append([file,value(prob.objective),formation_list])
     return disrupter_team_return
 
-def simulate_league():
+def load_spread():
+    # Open the spreads file
+    # Create the distribution dictionary
+    #Return the distribution dictionary
+    return 1
+
+# Seasons are simulated by having each team play each other twice (once home and once away)
+def simulate_league(premier_teams,disrupter_teams,seasons_to_simulate):
+    # Create the probability dictionary
+
+    # Create the premier teams dictionary
+    prob_dict = load_spread()
     pass
 
 def main():
     parser = define_option_parser()
     (options, args) = parser.parse_args()
 
-    budgets = [1500000,1750000,2000000,2250000,2500000]
+    budgets = [250000,500000,750000,1000000,1250000,1500000,1750000,2000000,2250000,2500000,2750000,3000000]
     formations = [[4,4,2],[3,4,3],[4,3,3],[3,5,2]]
     ## Perform in parallel
     pool = multiprocessing.Pool(processes=12)
@@ -179,8 +190,7 @@ def main():
         print("Refreshing Teams")
         new_teams = pool.map(create_premier_disrupter, budgets)
     disrupter_teams = pool.map(create_disrupter_formation, formations)
-    
-
+    simulate_league(premier_teams,disrupter_teams,10)
 
 if __name__ == "__main__":
     main()
