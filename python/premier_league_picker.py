@@ -13,6 +13,7 @@ def define_option_parser():
     usage = "Usage: %prog [options]"
     parser = OptionParser(usage)
     parser.add_option("-r","--refresh",action="store_true",dest="refresh_disrupters",help="Specify whether the teams should be done")
+    parser.add_option("-s","--seasons",type="int",dest="seasons",help="Set how many seasons to simulate",default=1)
     return parser
 
 # Solver Debugging
@@ -165,9 +166,10 @@ def load_spread():
     opened_csv = open('./res/distribution.csv',encoding='utf8')
     reader = csv.reader(opened_csv)
     next(reader)
+    modifier_row = next(reader)    
     spread_dict = {int(float(x[0])) : [float(x[1]),float(x[2]),float(x[3])] for x in reader}
     # E.g., spread_dict[diff][List with spread] = Win for specified difference
-    return spread_dict
+    return spread_dict, modifier_row[0]
 
 def create_premier_team_dict(premier_teams):
     premier_team_names = []
@@ -199,14 +201,20 @@ def simulate_league(premier_teams,disrupter_teams,formations,budgets,seasons_to_
     ## Create the probability dictionary
     # Print the prob of a tie when diff is -3
     # print (spread_dict[-3][1])
-    spread = load_spread()
+    spread, modifier = load_spread()
     # Create the premier teams dictionary
     premier_team_names, premier_teams_dict = create_premier_team_dict(premier_teams)
     ## Create disrupter team dictionary
-    # 
+    # key = budget_formation : value = avg(overall)
     disrupter_team_dict = create_disrupter_team_dict(disrupter_teams)
-    
-    
+    for budget in budgets:
+        print(f"Simulating Results for Budget: {budget}")
+        for season in range(seasons_to_simulate):
+            season += 1
+            print(f"Simulating Season {season}")
+
+
+
 
 
 def main():
@@ -226,7 +234,7 @@ def main():
         print("Refreshing Teams")
         pool.map(create_premier_disrupter, budgets)
     disrupter_teams = pool.map(create_disrupter_formation, formations)
-    simulate_league(premier_teams,disrupter_teams,formations,budgets,10)
+    simulate_league(premier_teams,disrupter_teams,formations,budgets,options.seasons)
 
 if __name__ == "__main__":
     main()
