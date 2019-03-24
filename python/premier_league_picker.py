@@ -213,10 +213,6 @@ def simulate_league(premier_teams,disrupter_teams,formations,budgets,seasons_to_
             season += 1
             print(f"Simulating Season {season}")
 
-
-
-
-
 def main():
     # Parse options passed in - easier to toggle full team refresh or not
     parser = define_option_parser()
