@@ -207,11 +207,26 @@ def simulate_league(premier_teams,disrupter_teams,formations,budgets,seasons_to_
     ## Create disrupter team dictionary
     # key = budget_formation : value = avg(overall)
     disrupter_team_dict = create_disrupter_team_dict(disrupter_teams)
+    outcomes = ['L','D','W']
     for budget in budgets:
-        print(f"Simulating Results for Budget: {budget}")
+        disrupter_name = "Fundamentals F.C. ("+str(budget)+")"
         for season in range(seasons_to_simulate):
             season += 1
             print(f"Simulating Season {season}")
+            print("Home\tAway\tWin/Draw/Loss")
+            for team in premier_teams_dict:
+                diff = int(round(premier_teams_dict[team] - disrupter_team_dict[str(budget)+'_'+''.join(map(str,formations))],0))
+                if diff > 10:
+                    diff = 10
+                if diff < -10:
+                    diff = -10
+                print(f"{team[:-3]}\t{disrupter_name}\t{np.random.choice(outcomes,p=spread[diff])}")
+                diff = int(round(disrupter_team_dict[str(budget)+'_'+''.join(map(str,formations))] - premier_teams_dict[team],0))
+                if diff > 10:
+                    diff = 10
+                if diff < -10:
+                    diff = -10
+                print(f"{disrupter_name}\t{team[:-3]}\t{np.random.choice(outcomes,p=spread[diff])}")
 
 def main():
     # Parse options passed in - easier to toggle full team refresh or not
