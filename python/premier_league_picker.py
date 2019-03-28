@@ -7,6 +7,7 @@ import numpy as np
 import random
 import pandas as pd
 from optparse import OptionParser
+from itertools import permutations
 
 # Create some arguments to make script more flexible - can now specify whether we want a full team refresh (time intensive)
 def define_option_parser():
@@ -20,7 +21,7 @@ def define_option_parser():
 def output_solver_results(name,prob):
     for v in prob.variables():
         name_id_split = v.name.split('_')
-        print(name,"\t",name_id_split[0],"\t",name_id_split[1],"\t",v.varValue)
+        print(name,",",name_id_split[0],",",name_id_split[1],",",v.varValue)
 
 # Setup the initial binary variables and base player array
 def setup_selection_a(path,encoding):
@@ -201,6 +202,16 @@ def constrain_diff(diff):
         return -10
     return diff
 
+def create_outcome_list(outcomes,spread_with_diff):
+    game_outcome = np.random.choice(outcomes,p=spread_with_diff)
+    if game_outcome == 'W':
+        return ['0','0','1']
+    if game_outcome == 'D':
+        return ['0','1','0']
+    if game_outcome == 'L':
+        return ['1','0','0']
+    return ['0','0','0']
+
 
 # Seasons are simulated by having each team play each other twice (once home and once away)
 def simulate_league(premier_teams,disrupter_teams,formations,budgets,seasons_to_simulate):
@@ -216,18 +227,27 @@ def simulate_league(premier_teams,disrupter_teams,formations,budgets,seasons_to_
     # key = budget_formation : value = avg(overall)
     disrupter_team_dict = create_disrupter_team_dict(disrupter_teams)
     outcomes = ['L','D','W']
-    print("Budget\tSeason\tHome\tAway\tWin/Draw/Loss")
+    print("Budget,Season,Home,Away,Loss,Draw,Win")
     for budget in budgets:
         disrupter_name = "Fundamentals F.C."
         for season in range(seasons_to_simulate):
             season += 1
             for team in premier_teams_dict:
                 diff = constrain_diff(int(round(premier_teams_dict[team] - disrupter_team_dict[str(budget)+'_'+''.join(map(str,formations))],0)))
-                print(f"{budget}\t{season}\t{team[:-3]}\t{disrupter_name}\t{np.random.choice(outcomes,p=spread[diff])}")
+                outcome_list = ','.join(create_outcome_list(outcomes,spread[diff]))
+                print (f"{budget},{season},{team[:-3]},{disrupter_name},{outcome_list}")
                 diff = constrain_diff(int(round(disrupter_team_dict[str(budget)+'_'+''.join(map(str,formations))] - premier_teams_dict[team],0)))
-                print(f"{budget}\t{season}\t{disrupter_name}\t{team[:-3]}\t{np.random.choice(outcomes,p=spread[diff])}")
+                outcome_list = ','.join(create_outcome_list(outcomes,spread[diff]))
+                print (f"{budget},{season},{disrupter_name},{team[:-3]},{outcome_list}")
             # Simulate the rest of the league
-            
+            season_schedule = permutations(premier_teams_dict.keys(),2)
+            for game in season_schedule:
+                # game[0] = team home 
+                # game[1] = team away
+                diff = constrain_diff(int(round(premier_teams_dict[game[0]] - premier_teams_dict[game[1]])))
+                outcome_list = ','.join(create_outcome_list(outcomes,spread[diff]))
+                print (f"{budget},{season},{game[0][:-3]},{game[1][:-3]},{outcome_list}")
+
 
 def main():
     # Parse options passed in - easier to toggle full team refresh or not
