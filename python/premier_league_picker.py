@@ -17,12 +17,6 @@ def define_option_parser():
     parser.add_option("-s","--seasons",type="int",dest="seasons",help="Set how many seasons to simulate",default=1)
     return parser
 
-# Solver Debugging
-def output_solver_results(name,prob):
-    for v in prob.variables():
-        name_id_split = v.name.split('_')
-        print(name,",",name_id_split[0],",",name_id_split[1],",",v.varValue)
-
 # Setup the initial binary variables and base player array
 def setup_selection_a(path,encoding):
     opened_csv = open(path,encoding=encoding)
@@ -45,7 +39,6 @@ def create_generic_constraint_arrays(a,is_disrupter):
     is_midfield = []
     is_offense = []
     is_from_england = []
-
     # Populate the Constraint Matrices
     for row in a:
         overall.append(int(float(row[7])))
@@ -56,8 +49,6 @@ def create_generic_constraint_arrays(a,is_disrupter):
         if is_disrupter:
             wage.append(int(float(row[12])))
             is_from_england.append(int(float(row[94])))
-
-
     if is_disrupter:
         return np.array(overall), np.array(wage), np.array(is_goalkeeper), np.array(is_defense), np.array(is_midfield), np.array(is_offense), np.array(is_from_england)
     return np.array(overall), np.array(is_goalkeeper), np.array(is_defense), np.array(is_midfield), np.array(is_offense)
@@ -98,7 +89,7 @@ def create_premier_league(formation_list):
         # Begin Creating the Maximization Problem
         prob = LpProblem('Fifa Team', LpMaximize)
         ## Set the objective function
-        # maximise skill
+        # maximize skill
         total_skill = sum(x * obj for x,obj in zip(selection,overall))
         prob += total_skill,"Maximize Skill"
         prob = create_formation(prob,selection,1,is_goalkeeper,formation_list[0],is_defense,formation_list[1],is_midfield,formation_list[2],is_offense)
@@ -113,7 +104,7 @@ def create_premier_disrupter(max_budget):
     overall, wage, is_goalkeeper, is_defense, is_midfield, is_offense, from_england = create_generic_constraint_arrays(a,True)
     prob = LpProblem('Fifa Team', LpMaximize)
     ## Set the objective function
-    # maximise skill
+    # maximize skill
     total_skill = sum(x * obj for x,obj in zip(selection,overall))
     prob += total_skill,"Maximize Skill"
     # Specify team distribution
@@ -134,7 +125,6 @@ def create_premier_disrupter(max_budget):
         if v.varValue == 1:
             name_id_split = v.name.split('_')
             player_ids.append(name_id_split[1])
-
     write_new_player_file(max_budget,player_ids)
     return [max_budget,prob]
 
@@ -218,8 +208,6 @@ def simulate_league(premier_teams,disrupter_teams,formations,budgets,seasons_to_
     # Fix the multiple wrappings
     formations = formations[0]
     ## Create the probability dictionary
-    # Print the prob of a tie when diff is -3
-    # print (spread_dict[-3][1])
     spread, modifier = load_spread()
     # Create the premier teams dictionary
     premier_team_names, premier_teams_dict = create_premier_team_dict(premier_teams)
@@ -227,7 +215,7 @@ def simulate_league(premier_teams,disrupter_teams,formations,budgets,seasons_to_
     # key = budget_formation : value = avg(overall)
     disrupter_team_dict = create_disrupter_team_dict(disrupter_teams)
     outcomes = ['L','D','W']
-    print("Budget,Season,Home,Away,Loss,Draw,Win")
+    print("Budget,Season,Home,Away,Diff,Loss,Draw,Win")
     for budget in budgets:
         disrupter_name = "Fundamentals F.C."
         for season in range(seasons_to_simulate):
@@ -235,19 +223,17 @@ def simulate_league(premier_teams,disrupter_teams,formations,budgets,seasons_to_
             for team in premier_teams_dict:
                 diff = constrain_diff(int(round(premier_teams_dict[team] - disrupter_team_dict[str(budget)+'_'+''.join(map(str,formations))],0)))
                 outcome_list = ','.join(create_outcome_list(outcomes,spread[diff]))
-                print (f"{budget},{season},{team[:-3]},{disrupter_name},{outcome_list}")
+                print (f"{budget},{season},{team[:-3]},{disrupter_name},{diff},{outcome_list}")
                 diff = constrain_diff(int(round(disrupter_team_dict[str(budget)+'_'+''.join(map(str,formations))] - premier_teams_dict[team],0)))
                 outcome_list = ','.join(create_outcome_list(outcomes,spread[diff]))
-                print (f"{budget},{season},{disrupter_name},{team[:-3]},{outcome_list}")
+                print (f"{budget},{season},{disrupter_name},{team[:-3]},{diff},{outcome_list}")
             # Simulate the rest of the league
             season_schedule = permutations(premier_teams_dict.keys(),2)
             for game in season_schedule:
-                # game[0] = team home 
-                # game[1] = team away
+                # game[0] = team home # game[1] = team away
                 diff = constrain_diff(int(round(premier_teams_dict[game[0]] - premier_teams_dict[game[1]])))
                 outcome_list = ','.join(create_outcome_list(outcomes,spread[diff]))
-                print (f"{budget},{season},{game[0][:-3]},{game[1][:-3]},{outcome_list}")
-
+                print (f"{budget},{season},{game[0][:-3]},{game[1][:-3]},{diff},{outcome_list}")
 
 def main():
     # Parse options passed in - easier to toggle full team refresh or not
@@ -263,7 +249,6 @@ def main():
     premier_teams = pool.map(create_premier_league, formations)
     # Specify whether the new entrants will be 
     if options.refresh_disrupters:
-        print("Refreshing Teams")
         pool.map(create_premier_disrupter, budgets)
     disrupter_teams = pool.map(create_disrupter_formation, formations)
     simulate_league(premier_teams,disrupter_teams,formations,budgets,options.seasons)
